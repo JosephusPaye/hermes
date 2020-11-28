@@ -1,0 +1,31 @@
+{
+  "name": "bbar",
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "format": "prettier --write \"src/**/*.{vue,js,css}\" \"*.{js,json,md,html}\""
+  },
+  "dependencies": {
+    "@tailwindcss/forms": "^0.2.1",
+    "mini-svg-data-uri": "^1.2.3",
+    "vue": "^3.0.2"
+  },
+  "devDependencies": {
+    "@tailwindcss/aspect-ratio": "^0.2.0",
+    "@vue/compiler-sfc": "^3.0.2",
+    "autoprefixer": "^10.0.4",
+    "postcss": "^8.1.10",
+    "prettier": "^2.2.1",
+    "tailwindcss": "^2.0.1",
+    "vite": "^1.0.0-rc.9"
+  },
+  "resolutions": {
+    "postcss": "8.1.10"
+  },
+  "prettier": {
+    "tabWidth": 2,
+    "useTabs": false,
+    "singleQuote": true
+  }
+}
