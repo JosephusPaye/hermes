@@ -1,6 +1,8 @@
 <template>
   <div class="h-screen relative">
-    <div class="text-center w-full pt-5 text-gray-500 absolute text-sm">
+    <div
+      class="text-center w-full pt-5 text-gray-500 absolute select-none text-sm"
+    >
       Drag and drop an image onto a slide to preview.
     </div>
     <div class="h-full bg-gray-200 overflow-y-auto p-16">
