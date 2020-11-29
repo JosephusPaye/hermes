@@ -2,6 +2,7 @@
   <div class="h-screen w-screen flex">
     <div
       class="w-1/3 flex flex-col bg-gray-200 border-r-2 border-gray-300 relative"
+      style="min-width: 448px; max-width: 580px"
     >
       <Header class="absolute z-20 top-0" />
       <Editor
@@ -10,7 +11,7 @@
         class="pt-20 h-full overflow-y-auto"
       />
     </div>
-    <div class="w-2/3 bg-gray-200 flex flex-col">
+    <div class="w-2/3 flex-grow bg-gray-200 flex flex-col">
       <Preview :lowerThirds="lowerThirds" :backgroundImage="backgroundImage" />
     </div>
   </div>
