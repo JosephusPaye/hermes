@@ -1,5 +1,5 @@
 <template>
-  <div class="border border-gray-300 bg-white p-4 rounded">
+  <div class="editor-slide border border-gray-300 bg-white p-4 rounded">
     <Input label="Title" placeholder="Enter title" v-model="lowerThird.title" />
     <Textarea
       class="mt-2"

@@ -73,6 +73,16 @@ export default {
 
     addLowerThird() {
       this.lowerThirds.push(this.createLowerThird());
+
+      this.$nextTick(() => {
+        const newSlideInput = this.$el.querySelector(
+          '.editor-slide:nth-last-child(2) input'
+        );
+
+        if (newSlideInput) {
+          newSlideInput.focus();
+        }
+      });
     },
 
     onDragOver(event) {
