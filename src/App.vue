@@ -51,7 +51,7 @@ const saveLowerThirds = debounce(
   (lowerThirds) => {
     storage.setLastOpenLowerThirds(lowerThirds);
   },
-  300,
+  1000,
   {
     leading: true,
     trailing: true,
