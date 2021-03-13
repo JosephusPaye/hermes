@@ -4,7 +4,11 @@
       class="w-1/3 flex flex-col bg-gray-200 border-r-2 border-gray-300 relative"
       style="min-width: 454px; max-width: 580px"
     >
-      <Header class="absolute z-20 top-0" />
+      <Header
+        class="absolute z-20 top-0"
+        @import="onImport"
+        @export="onExport"
+      />
       <Editor
         :lowerThirds="lowerThirds"
         @add="addLowerThird"
@@ -12,13 +16,18 @@
       />
     </div>
     <div class="w-2/3 flex-grow bg-gray-200 flex flex-col">
-      <Preview :lowerThirds="lowerThirds" :backgroundImage="backgroundImage" />
+      <Preview
+        :lowerThirds="lowerThirds"
+        :backgroundImage="backgroundImage"
+        ref="preview"
+      />
     </div>
   </div>
 </template>
 
 <script>
 import debounce from 'lodash.debounce';
+import { saveAs } from 'file-saver';
 
 import Header from './components/Header.vue';
 import Editor from './components/Editor.vue';
@@ -121,6 +130,20 @@ export default {
       if (file && file.type.startsWith('image/')) {
         this.backgroundImage = URL.createObjectURL(file);
       }
+    },
+
+    onImport(data) {
+      if (confirm('Replace the current lower thirds with the imported data?')) {
+        this.lowerThirds = data;
+      }
+    },
+
+    onExport() {
+      const blob = new Blob([JSON.stringify(this.lowerThirds, null, '  ')], {
+        type: 'text/plain;charset=utf-8',
+      });
+
+      saveAs(blob, 'Lower Thirds.hermeslt');
     },
   },
 };

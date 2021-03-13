@@ -2,30 +2,32 @@
   <div class="w-full">
     <div class="px-5 pt-5 flex items-center w-full">
       <div
-        class="text-xl bg-black text-white cursor-default select-none leading-none px-5 h-9 flex items-center rounded-full"
+        class="text-xl bg-gray-900 text-white cursor-default select-none leading-none pl-5 pr-2 h-9 flex items-center rounded-full rounded-r-none"
         title="Lower thirds that do the limbo"
       >
         Hermes
       </div>
-      <!--
-        Settings button:
-        <button
-          class="border-l border-gray-200 bg-black text-white rounded-full rounded-l-none pr-3 pl-2 h-9 flex items-center cursor-default hover:opacity-80 focus:opacity-80"
+      <button
+        class="bg-gray-900 text-white rounded-full rounded-l-none pr-3 pl-2 h-9 flex items-center cursor-default hover:opacity-80 focus:opacity-80"
+        title="Menu"
+        @click="showMenu = !showMenu"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="feather feather-chevron-down"
+          :style="{ transform: `rotate(${showMenu ? '180deg' : '0'})` }"
         >
-          <svg
-            version="1.1"
-            xmlns="http://www.w3.org/2000/svg"
-            width="20"
-            height="20"
-            viewBox="0 0 20 20"
-          >
-            <path
-              fill="currentColor"
-              d="M16.783 10c0-1.049 0.646-1.875 1.617-2.443-0.176-0.584-0.407-1.145-0.692-1.672-1.089 0.285-1.97-0.141-2.711-0.883-0.741-0.74-0.968-1.621-0.683-2.711-0.527-0.285-1.088-0.518-1.672-0.691-0.568 0.97-1.595 1.615-2.642 1.615-1.048 0-2.074-0.645-2.643-1.615-0.585 0.173-1.144 0.406-1.671 0.691 0.285 1.090 0.059 1.971-0.684 2.711-0.74 0.742-1.621 1.168-2.711 0.883-0.285 0.527-0.517 1.088-0.691 1.672 0.97 0.568 1.615 1.394 1.615 2.443 0 1.047-0.645 2.074-1.615 2.643 0.175 0.584 0.406 1.144 0.691 1.672 1.090-0.285 1.971-0.059 2.711 0.682s0.969 1.623 0.684 2.711c0.527 0.285 1.087 0.518 1.672 0.693 0.568-0.973 1.595-1.617 2.643-1.617 1.047 0 2.074 0.645 2.643 1.617 0.584-0.176 1.144-0.408 1.672-0.693-0.285-1.088-0.059-1.969 0.683-2.711 0.741-0.74 1.622-1.166 2.711-0.883 0.285-0.527 0.517-1.086 0.692-1.672-0.973-0.569-1.619-1.395-1.619-2.442zM10 13.652c-2.018 0-3.653-1.635-3.653-3.652 0-2.018 1.636-3.654 3.653-3.654s3.652 1.637 3.652 3.654c0 2.018-1.634 3.652-3.652 3.652z"
-            ></path>
-          </svg>
-        </button>
-      -->
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </button>
       <div class="text-gray-500 text-sm ml-auto flex pr-4">
         <div>
           By
@@ -67,11 +69,71 @@
         </a>
       </div>
     </div>
+
+    <div
+      class="bg-white shadow-lg inline-block rounded mt-1 py-4 px-4 ml-5 mr-5 max-w-xs"
+      v-if="showMenu"
+    >
+      <label class="inline-flex">
+        <input
+          type="file"
+          class="sr-only"
+          accept=".hermeslt"
+          @change="onFileChange"
+        />
+        <div
+          class="text-gray-100 bg-gray-900 px-4 py-px rounded-full hover:bg-gray-700 focus:bg-gray-700"
+        >
+          Import
+        </div>
+      </label>
+      <button
+        class="text-gray-100 bg-gray-900 px-4 py-px rounded-full ml-1 cursor-default hover:bg-gray-700 focus:bg-gray-700"
+        @click="onExport"
+      >
+        Export
+      </button>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
   name: 'Header',
+
+  data() {
+    return {
+      showMenu: false,
+    };
+  },
+
+  methods: {
+    onFileChange(e) {
+      if (e.target.files && e.target.files[0]) {
+        const file = e.target.files[0];
+        const reader = new FileReader();
+
+        reader.addEventListener('load', (e) => {
+          const text = e.target.result;
+
+          try {
+            const data = JSON.parse(text);
+            this.showMenu = false;
+            this.$emit('import', data);
+          } catch (err) {
+            alert(`Selected file "${file.name}" is not valid`);
+            console.log('Import error', err);
+          }
+        });
+
+        reader.readAsText(file);
+      }
+    },
+
+    onExport() {
+      this.showMenu = false;
+      this.$emit('export');
+    },
+  },
 };
 </script>
