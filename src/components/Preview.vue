@@ -47,7 +47,7 @@ export default {
       const zip = new JSZip();
 
       const slides = Array.from(
-        this.$el.querySelectorAll('.lower-third-slide svg')
+        this.$el.querySelectorAll('.lower-third-slide svg.slide-rendered')
       );
 
       slides.forEach((slide, i) => {

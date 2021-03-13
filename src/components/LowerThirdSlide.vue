@@ -45,6 +45,7 @@
         height="100%"
         :viewBox="`0 0 ${width} ${height}`"
         preserveAspectRatio="xMidYMid meet"
+        class="slide-rendered"
         ref="svg"
       >
         <g v-if="titleGroup" :transform="titleTransform">
