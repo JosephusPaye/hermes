@@ -3,8 +3,15 @@
     <EditorSlide
       v-for="(lowerThird, index) in lowerThirds"
       :key="lowerThird.id"
+      :id="`editor-slide-${lowerThird.id}`"
       :lowerThird="lowerThird"
       :class="{ 'mt-4': index !== 0 }"
+      @remove="$emit('remove-slide', index)"
+      @duplicate="$emit('duplicate-slide', index)"
+      @move-up="$emit('move-slide-up', index)"
+      @move-down="$emit('move-slide-down', index)"
+      @insert-before="$emit('insert-before-slide', index)"
+      @insert-after="$emit('insert-after-slide', index)"
     />
     <button
       @click="$emit('add')"

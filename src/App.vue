@@ -13,6 +13,12 @@
       <Editor
         :lowerThirds="lowerThirds"
         @add="addLowerThird"
+        @remove-slide="removeSlide"
+        @duplicate-slide="duplicateSlide"
+        @move-slide-up="moveSlideUp"
+        @move-slide-down="moveSlideDown"
+        @insert-before-slide="insertBeforeSlide"
+        @insert-after-slide="insertAfterSlide"
         class="pt-20 h-full overflow-y-auto"
       />
     </div>
@@ -35,6 +41,7 @@ import Editor from './components/Editor.vue';
 import Preview from './components/Preview.vue';
 
 import * as storage from './storage';
+import { scrollIntoView } from './scroll-into-view';
 
 function randomId(prefix = '') {
   return prefix + Math.random().toString(36).substr(2, 10);
@@ -151,6 +158,81 @@ export default {
       if (confirm('Remove all lower thirds?')) {
         this.lowerThirds = [this.createLowerThird('', '')];
       }
+    },
+
+    removeSlide(index) {
+      this.lowerThirds.splice(index, 1);
+
+      if (this.lowerThirds.length > 0) {
+        const nextIndex = Math.min(index, this.lowerThirds.length - 1);
+        const next = this.lowerThirds[nextIndex];
+        next && this.focusSlide(next.id);
+      }
+    },
+
+    duplicateSlide(index) {
+      const slide = this.lowerThirds[index];
+
+      if (slide) {
+        const copy = JSON.parse(JSON.stringify(slide));
+        copy.id = randomId();
+        this.lowerThirds.splice(index, 0, copy);
+
+        this.focusSlide(copy.id);
+      }
+    },
+
+    moveSlideUp(index) {
+      if (index < 1 || this.lowerThirds.length < 2) {
+        return;
+      }
+
+      const slide = this.lowerThirds[index];
+
+      this.lowerThirds[index] = this.lowerThirds[index - 1];
+      this.lowerThirds[index - 1] = slide;
+
+      this.focusSlide(slide.id);
+    },
+
+    moveSlideDown(index) {
+      if (index > this.lowerThirds.length - 2) {
+        return;
+      }
+
+      const slide = this.lowerThirds[index];
+
+      this.lowerThirds[index] = this.lowerThirds[index + 1];
+      this.lowerThirds[index + 1] = slide;
+
+      this.focusSlide(slide.id);
+    },
+
+    insertBeforeSlide(index) {
+      const newSlide = this.createLowerThird('', '');
+      const newIndex = index;
+
+      this.lowerThirds.splice(newIndex, 0, newSlide);
+      this.focusSlide(newSlide.id);
+    },
+
+    insertAfterSlide(index) {
+      const newSlide = this.createLowerThird('', '');
+      const newIndex = index + 1;
+
+      this.lowerThirds.splice(newIndex, 0, newSlide);
+      this.focusSlide(newSlide.id);
+    },
+
+    focusSlide(id) {
+      this.$nextTick(() => {
+        const el = this.$el.querySelector(`#editor-slide-${id}`);
+
+        if (el) {
+          el.focus();
+          scrollIntoView(el);
+        }
+      });
     },
   },
 };
