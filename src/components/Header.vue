@@ -128,7 +128,7 @@ export default {
             this.$emit('import', data);
           } catch (err) {
             alert(`Selected file "${file.name}" is not valid`);
-            console.log('Import error', err);
+            console.log('File import error', err);
           }
         });
 
