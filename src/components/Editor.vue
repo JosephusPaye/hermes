@@ -8,7 +8,7 @@
     />
     <button
       @click="$emit('add')"
-      class="mt-4 bg-black hover:opacity-80 focus:opacity-80 cursor-default text-white flex items-center justify-center py-1 w-64 mx-auto rounded-full"
+      class="mt-4 bg-gray-900 hover:opacity-80 focus:opacity-80 cursor-default text-white flex items-center justify-center py-1 w-64 mx-auto rounded-full"
     >
       <svg
         version="1.1"

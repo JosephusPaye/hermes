@@ -11,7 +11,7 @@
     >
       <div class="slide-number"></div>
       <button
-        class="absolute right-0 top-0 mt-4 mr-4 p-2 bg-black text-white rounded-full hover:opacity-80 focus:opacity-80"
+        class="absolute right-0 top-0 mt-4 mr-4 p-2 bg-gray-900 text-white rounded-full hover:opacity-80 focus:opacity-80"
         title="Download"
         @click="startDownload"
       >
