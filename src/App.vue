@@ -18,13 +18,28 @@
 </template>
 
 <script>
+import debounce from 'lodash.debounce';
+
 import Header from './components/Header.vue';
 import Editor from './components/Editor.vue';
 import Preview from './components/Preview.vue';
 
+import * as storage from './storage';
+
 function randomId(prefix = '') {
   return prefix + Math.random().toString(36).substr(2, 10);
 }
+
+const saveLowerThirds = debounce(
+  (lowerThirds) => {
+    storage.setLastOpenLowerThirds(lowerThirds);
+  },
+  300,
+  {
+    leading: true,
+    trailing: true,
+  }
+);
 
 export default {
   name: 'App',
@@ -38,13 +53,22 @@ export default {
   data() {
     return {
       backgroundImage: '',
-      lowerThirds: [
+      lowerThirds: storage.getLastOpenLowerThirds([
         this.createLowerThird(
           'John 3:16',
           'For God so loved the world that he gave his one and only Son, that whoever believes in him shall not perish but have eternal life.'
         ),
-      ],
+      ]),
     };
+  },
+
+  watch: {
+    lowerThirds: {
+      deep: true,
+      handler(lowerThirds) {
+        saveLowerThirds(lowerThirds);
+      },
+    },
   },
 
   mounted() {
