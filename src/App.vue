@@ -8,6 +8,7 @@
         class="absolute z-20 top-0"
         @import="onImport"
         @export="onExport"
+        @reset="onReset"
       />
       <Editor
         :lowerThirds="lowerThirds"
@@ -144,6 +145,12 @@ export default {
       });
 
       saveAs(blob, 'Lower Thirds.hermeslt');
+    },
+
+    onReset() {
+      if (confirm('Remove all lower thirds?')) {
+        this.lowerThirds = [this.createLowerThird('', '')];
+      }
     },
   },
 };

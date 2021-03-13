@@ -93,6 +93,12 @@
       >
         Export
       </button>
+      <button
+        class="text-gray-100 bg-gray-900 px-4 py-px rounded-full ml-1 cursor-default hover:bg-gray-700 focus:bg-gray-700"
+        @click="onReset"
+      >
+        Reset
+      </button>
     </div>
   </div>
 </template>
@@ -133,6 +139,11 @@ export default {
     onExport() {
       this.showMenu = false;
       this.$emit('export');
+    },
+
+    onReset() {
+      this.showMenu = false;
+      this.$emit('reset');
     },
   },
 };
