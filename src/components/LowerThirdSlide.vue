@@ -1,11 +1,15 @@
 <template>
-  <div class="lower-third-slide bg-white aspect-w-16 aspect-h-9 h-0">
+  <div
+    class="lower-third-slide bg-white aspect-w-16 aspect-h-9 h-0"
+    :data-file-name="fileName"
+  >
     <div
       class="bg-cover"
       :style="
         backgroundImage ? { backgroundImage: `url(${backgroundImage})` } : null
       "
     >
+      <div class="slide-number"></div>
       <button
         class="absolute right-0 top-0 mt-4 mr-4 p-2 bg-black text-white rounded-full hover:opacity-80 focus:opacity-80"
         title="Download"
@@ -61,6 +65,21 @@
 
 <script>
 import TextBox from './TextBox.vue';
+
+const illegalRe = /[\/\?<>\\:\*\|":]/g;
+const controlRe = /[\x00-\x1f\x80-\x9f]/g;
+const reservedRe = /^\.+$/;
+const windowsReservedRe = /^(con|prn|aux|nul|com[0-9]|lpt[0-9])(\..*)?$/i;
+
+function sanitizeFileName(input, replacement = '_') {
+  const sanitized = input
+    .replace(illegalRe, replacement)
+    .replace(controlRe, replacement)
+    .replace(reservedRe, replacement)
+    .replace(windowsReservedRe, replacement);
+
+  return sanitized.slice(0, 255);
+}
 
 export default {
   name: 'LowerThirdSlide',
@@ -121,15 +140,26 @@ export default {
 
       return `translate(${x},${y})`;
     },
+
+    fileName() {
+      return sanitizeFileName(
+        `${
+          this.titleGroup?.lines[0].text ||
+          this.subtitleGroup?.lines[0].text ||
+          'slide'
+        }.svg`
+      );
+    },
   },
 
   methods: {
     createDownloadableSVG() {
       const svg = this.$refs.svg.outerHTML;
-      return [
-        `<?xml version="1.0" standalone="no"?>`,
-        svg.replace(/&nbsp;/g, '&#x00a0;'),
-      ].join('\n');
+      return (
+        `<?xml version="1.0" standalone="no"?>` +
+        '\n' +
+        svg.replace(/&nbsp;/g, '&#x00a0;')
+      );
     },
 
     startDownload() {
@@ -138,10 +168,7 @@ export default {
       const [index, totalSlides] = this.findIndex();
       const count = String(index + 1).padStart(String(totalSlides).length, '0');
 
-      this.download(
-        `${count} - ${this.titleGroup?.lines[0].text || 'slide'}.svg`,
-        file
-      );
+      this.download(`${count} - ${this.fileName}`, file);
     },
 
     download(filename, text) {
@@ -174,3 +201,22 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.slide-number {
+  font-family: 'Inter var';
+  font-weight: 800;
+  font-size: 172px;
+  letter-spacing: -0.1em;
+  position: absolute;
+  opacity: 0.05;
+  line-height: 1;
+  top: -21px;
+  left: -7px;
+}
+
+.slide-number::before {
+  counter-increment: slides-counter;
+  content: counter(slides-counter, decimal-leading-zero);
+}
+</style>

@@ -8,7 +8,9 @@
   },
   "dependencies": {
     "@tailwindcss/forms": "^0.2.1",
+    "file-saver": "^2.0.5",
     "focus-visible": "^5.2.0",
+    "jszip": "^3.6.0",
     "mini-svg-data-uri": "^1.2.3",
     "vue": "^3.0.2"
   },
