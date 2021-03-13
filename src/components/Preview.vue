@@ -31,10 +31,11 @@
         class="preview grid grid-cols-1 gap-8 h-full mx-auto ma-w max-w-6xl relative bg-gray-200 z-10"
       >
         <LowerThird
-          v-for="lowerThird in lowerThirds"
+          v-for="lowerThird, index in lowerThirds"
           :key="lowerThird.id"
           :lowerThird="lowerThird"
           :backgroundImage="backgroundImage"
+          :index="index"
         />
       </div>
     </div>

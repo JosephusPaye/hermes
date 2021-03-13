@@ -63,6 +63,7 @@ export default {
       required: true,
     },
     backgroundImage: String,
+    index: Number,
   },
 
   data() {
@@ -111,7 +112,9 @@ export default {
         },
         background: {
           color: 'rgba(0,0,0,0.85)',
-          minWidth: 1728, // maxSafeWidth
+          // Have the subtitle background match the text width (just like the title)
+          // if the slide belongs to the first lower third
+          minWidth: this.index === 0 ? 0 : 1728, // 1728 is maxSafeWidth
         },
       },
     };
